@@ -1,6 +1,6 @@
 export function drawCircles(data) {
-	const width = '932';
-	const height = '932';
+	const width = '1000';
+	const height = '1000';
 
 	const pack = data => d3.pack()
 		.size([width, height])
@@ -15,7 +15,6 @@ export function drawCircles(data) {
 		.attr('font-size', 10)
 		.attr('font-family', 'sans-serif')
 		.attr('text-anchor', 'middle');
-
 
 	const bubble = svg.selectAll('g')
 		.data(root.leaves())

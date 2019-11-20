@@ -2,6 +2,18 @@ body {
 	margin: 0;
 }
 
+main {
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+
+#bubbleChart > svg {
+	width: 300vmax;
+	height: 300vmax;
+	transform: translateX(-100vmax) translateY(-100vmax);
+}
+
 .bubbles {
 	fill: grey;
 	fill-opacity: 0.7;
