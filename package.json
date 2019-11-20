@@ -1,0 +1,22 @@
+{
+  "name": "frontend-data",
+  "version": "1.0.0",
+  "description": "This repo is for the subject frontend-data from the [Tech Track](https://github.com/cmda-tt/course-19-20)",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iSirThijs/frontend-data.git"
+  },
+  "author": "Thijs Spijker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iSirThijs/frontend-data/issues"
+  },
+  "homepage": "https://github.com/iSirThijs/frontend-data#readme",
+  "devDependencies": {
+    "eslint": "^6.6.0"
+  }
+}

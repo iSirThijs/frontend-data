@@ -1,0 +1,14 @@
+{
+  "name": "nmvw-sparql-module",
+  "version": "1.0.0",
+  "description": "A module to get data from the NMVW database",
+  "main": "nmvw-sparql-module.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thijs Spijker",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^6.6.0"
+  }
+}
