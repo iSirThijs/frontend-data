@@ -5,7 +5,7 @@ export function drawCircles(data) {
 	const pack = data => d3.pack()
 		.size([width, height])
 		(d3.hierarchy({children: data})
-			.sum(d => d.creatorCount));
+			.sum(d => Math.sqrt(d.creatorCount)));
 
 	const root = pack(data);
 
@@ -28,10 +28,14 @@ export function drawCircles(data) {
 	console.log(root);
 
 	bubble.append('circle')
-		.attr('r', d => (d.r))
-		.attr('fill', 'grey')
-		.attr('fill-opacity', 0.7);
-	
+		.attr('class', 'bubbles')
+		.append('animate')
+		.attr('attributeName', 'r')
+		.attr('to', d => d.r)
+		.attr('begin', 'bubbleChart')
+		.attr('dur', '1s')
+		.attr('restart', 'never')
+		.attr('fill', 'freeze');
 
 	return svg.node();
 }
