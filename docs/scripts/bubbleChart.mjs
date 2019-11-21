@@ -9,7 +9,8 @@ export function drawCircles(data) {
 
 	const root = pack(data);
 	const dragSVG = d3.drag()
-		.on("drag", function(d) {
+		.on('drag', function(d) {
+			// console.log('draging')
 			// relative x y
 			let dx = d3.event.dx;
 			let dy = d3.event.dy;
@@ -18,29 +19,26 @@ export function drawCircles(data) {
 			let newX = d.dx ? d.dx + dx : d.x + dx;	
 			let newY = d.dy ? d.dy + dy : d.y + dy;
 			
-			let previousMaxX = d.maxX ? d.maxX : 0;
+			let previousMaxX = d.maxX ? d.maxX : 1000;
 			let previousMinX = d.minX ? d.minX : 0;
-			let previousMaxY = d.maxY ? d.maxY : 0;
+			let previousMaxY = d.maxY ? d.maxY : 1000;
 			let previousMinY = d.minY ? d.minY : 0;
 
 			d.dx = checkMinMax(newX, previousMaxX, previousMinX);
 			d.dy = checkMinMax(newY, previousMaxY, previousMinY);
-
 			
 			// calculate new min/max values for x and y
 			let [minX, maxX] = calculateX(d.r, d.y, d.dy, d.x);
-			let [minY, maxY] = calculateX(d.r, d.x, d.dx, d.y);
-
+			let [minY, maxY] = calculateY(d.r, d.x, d.dx, d.y);
+			
 			d.minX = minX;
 			d.maxX = maxX;
 			d.minY = minY;
 			d.maxY = maxY;
 
-			// let x = d.dx < 500 ? d.dx : d.dx - 200;
-			// let y = d.dy < 500 ? d.dy : d.dy - 200;
-
 			d3.select(this).attr('viewBox', d => `${d.dx}, ${d.dy}, ${width}, ${height}`);
-		});
+		})
+		// .on('end', ...data => console.log(data));
 
 	const svg = d3.select('#bubbleChart')
 		.data(root.ancestors())
@@ -49,7 +47,7 @@ export function drawCircles(data) {
 		.attr('font-size', 10)
 		.attr('font-family', 'sans-serif')
 		.attr('text-anchor', 'middle')
-		.call(dragSVG)
+		.call(dragSVG);
 
 	const bubble = svg.selectAll('g')
 		.data(root.leaves())
@@ -84,7 +82,7 @@ function calculateX(radius, offsetY, y, offsetX) {
 	let minX = -cx + offsetX;
 	let maxX = cx + offsetX;
 
-	return [minX, maxX];
+	return [minX, maxX - 350];
 
 }
 
@@ -95,14 +93,15 @@ function calculateY(radius, offsetX, x, offsetY) {
 	let minY = -cy + offsetY;
 	let maxY = cy + offsetY;
 
-	return [minX, maxX];
+	return [minY, maxY - 200];
 
 }
 
 function checkMinMax(value, max, min){
 
 	if(value <= max && value >= min) return value
-	else if( value < min ) return min
-	else if( value > max ) return max
+	else if( value < min ) return min;
+	else if( value > max ) return max;
+	// else if( value > max ) return max;
 
 }
