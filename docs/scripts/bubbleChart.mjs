@@ -21,15 +21,16 @@ export function drawCircles(data) {
 	// Creates the viewBox
 	const svg = d3.select('#bubbleChart')
 		.append('svg')
-		.attr('viewBox', d => `0, 0, ${width}, ${height}`);
+		.data(root.ancestors()) // assign the root to the group of bubbles
+		.attr('viewBox', d => `0, 0, ${width}, ${height}`)
+		.call(zoom);
+		
 
 	// Creates a group with all the bubbles, this group will use scale and translate.
 	const bubbles = svg
 		.append('g')
-		.data(root.ancestors()) // assign the root to the group of bubbles
 		.attr('id', d => d.id)
 		.attr('transform', d  => `translate(-${d.x}, -${d.y})`)
-		.call(zoom);
 
 	const bubble = bubbles.selectAll('g')
 		.data(root.leaves())
@@ -50,16 +51,17 @@ export function drawCircles(data) {
 
 	return svg.node();
 
-	function translate(d, i, e) {
+	function translate(d) {
 		let transform = d3.event.transform;
-		let {x, y} = d;
+		let { x, y } = d;
+
 		let translate = transform.translate(-x, -y);
 	
 		bubbles.attr('transform', translate);
 
 	}
 
-	
+
 }
 
 
