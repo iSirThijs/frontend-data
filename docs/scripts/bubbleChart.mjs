@@ -14,7 +14,7 @@ export function drawCircles(data) {
 
 	// zoom and pan features
 	const zoom = d3.zoom()
-		.scaleExtent([1, 1])
+		.scaleExtent([1, 1.5])
 		.on('zoom', translate);
 
 
@@ -54,9 +54,8 @@ export function drawCircles(data) {
 	function translate(d) {
 		let transform = d3.event.transform;
 		let { x, y } = d;
-
 		let translate = transform.translate(-x, -y);
-	
+
 		bubbles.attr('transform', translate);
 
 	}
