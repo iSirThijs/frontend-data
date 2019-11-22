@@ -1,4 +1,58 @@
+@import './fonts.css';
+
 body {
+	margin: 0;
+	font-family: 'Open Sans', sans-serif ;
+}
+
+
+
+header {
+	/* lay-out */
+	display: flex;
+	flex-flow: column;
+	justify-content: flex-start;
+
+	/* position */
+	position: fixed;
+	top: 0;
+	left: 0;
+	margin: 0;
+
+	/* size */
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0.2em;
+}
+
+header > * {
+	box-sizing: border-box;
+	border-radius: 0.5em;
+	margin: 0;
+	margin-bottom: 0.2rem;
+}
+
+header > h1 {
+	height: 2em;
+	background-color: rgba(209, 209, 209, 0.795);
+	font-family: 'Montserrat';
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+#info-card {
+	position: sticky;
+	background: rgb(119, 110, 128);
+	display: flex;
+	flex-flow: column;
+	justify-content: flex-start;
+	padding: 0.5em;
+}
+
+#info-card > p {
+	color: white;
 	margin: 0;
 }
 
