@@ -9,8 +9,8 @@ main {
 }
 
 #bubbleChart > svg {
-	width: 500vmin;
-	height: 500vmin;
+	width: 500vmax;
+	height: 500vmax;
 }
 
 .bubbles {

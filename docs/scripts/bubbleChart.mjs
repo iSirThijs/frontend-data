@@ -1,64 +1,42 @@
+/* eslint-disable no-undef */
 export function drawCircles(data) {
 	const height = 1000;
 	const width = 1000;
 
+	// Gets the lay-out for the data
 	const pack = data => d3.pack()
 		.size([width, height])
 		(d3.hierarchy({children: data})
 			.sum(d => Math.sqrt(d.creatorCount)));
 
 	const root = pack(data);
-	const dragSVG = d3.drag()
-		.on('drag', function(d) {
-			// console.log('draging')
-			// relative x y
-			let dx = d3.event.dx;
-			let dy = d3.event.dy;
 
-			// newXandY
-			let newX = d.dx ? d.dx + dx : d.x + dx;	
-			let newY = d.dy ? d.dy + dy : d.y + dy;
-			
-			let previousMaxX = d.maxX ? d.maxX : 1000;
-			let previousMinX = d.minX ? d.minX : 0;
-			let previousMaxY = d.maxY ? d.maxY : 1000;
-			let previousMinY = d.minY ? d.minY : 0;
 
-			d.dx = checkMinMax(newX, previousMaxX, previousMinX);
-			d.dy = checkMinMax(newY, previousMaxY, previousMinY);
-			
-			// calculate new min/max values for x and y
-			let [minX, maxX] = calculateX(d.r, d.y, d.dy, d.x);
-			let [minY, maxY] = calculateY(d.r, d.x, d.dx, d.y);
-			
-			d.minX = minX;
-			d.maxX = maxX;
-			d.minY = minY;
-			d.maxY = maxY;
+	// zoom and pan features
+	const zoom = d3.zoom()
+		.scaleExtent([1, 1])
+		.on('zoom', translate);
 
-			d3.select(this).attr('viewBox', d => `${d.dx}, ${d.dy}, ${width}, ${height}`);
-		})
-		// .on('end', ...data => console.log(data));
 
+	// Creates the viewBox
 	const svg = d3.select('#bubbleChart')
-		.data(root.ancestors())
 		.append('svg')
-		.attr('viewBox', d => `${d.x}, ${d.y}, ${width}, ${height}`)
-		.attr('font-size', 10)
-		.attr('font-family', 'sans-serif')
-		.attr('text-anchor', 'middle')
-		.call(dragSVG);
+		.attr('viewBox', d => `0, 0, ${width}, ${height}`);
 
-	const bubble = svg.selectAll('g')
+	// Creates a group with all the bubbles, this group will use scale and translate.
+	const bubbles = svg
+		.append('g')
+		.data(root.ancestors()) // assign the root to the group of bubbles
+		.attr('id', d => d.id)
+		.attr('transform', d  => `translate(-${d.x}, -${d.y})`)
+		.call(zoom);
+
+	const bubble = bubbles.selectAll('g')
 		.data(root.leaves())
 		.enter()
 		.append('g')
 		.attr('id', d => d.id)
 		.attr('transform', d => `translate(${d.x},${d.y})`);
-	
-	console.log(root);
-
-	// console.log(calculateMaxX(500, [500, 250], [500, 500]));
 
 	bubble.append('circle')
 		.attr('class', 'bubbles')
@@ -71,37 +49,32 @@ export function drawCircles(data) {
 		.attr('fill', 'freeze');
 
 	return svg.node();
+
+	function translate(d, i, e) {
+		let transform = d3.event.transform;
+		let {x, y} = d;
+		let translate = transform.translate(-x, -y);
+	
+		bubbles.attr('transform', translate);
+
+	}
+
+	
 }
 
 
-function calculateX(radius, offsetY, y, offsetX) {
 
-	let cy = y - offsetY;
-	let cx = Math.sqrt((Math.pow(radius,2) - Math.pow(cy, 2)));
 
-	let minX = -cx + offsetX;
-	let maxX = cx + offsetX;
-
-	return [minX, maxX - 350];
-
-}
-
-function calculateY(radius, offsetX, x, offsetY) {
-	let cx = x - offsetX;
-	let cy = Math.sqrt((Math.pow(radius,2) - Math.pow(cx, 2)));
-
-	let minY = -cy + offsetY;
-	let maxY = cy + offsetY;
-
-	return [minY, maxY - 200];
-
-}
-
-function checkMinMax(value, max, min){
-
-	if(value <= max && value >= min) return value
-	else if( value < min ) return min;
-	else if( value > max ) return max;
-	// else if( value > max ) return max;
-
-}
+// svg = d3.select('.chart')
+//     .classed("svg-container", true)
+//     .append('svg')
+//     .attr('class', 'chart')
+//     .attr("viewBox", "0 0 680 490")
+//     .attr("preserveAspectRatio", "xMinYMin meet")
+//     .classed("svg-content-responsive", true)
+//     // call d3 Zoom
+//     .call(d3.zoom().on("zoom", function () {
+//         svg.attr("transform", d3.event.transform)
+//         }))
+//     .append("g")
+//     .attr("transform", "translate(" + margin + "," + margin + ")");
