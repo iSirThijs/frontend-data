@@ -49,8 +49,9 @@ export function toObjects(rawResults) {
 }
 
 export function toMap(rawResults) {
-	return rawResults.reduce((cleanedResults, result) => {
+	return rawResults.reduce((cleanedResults, result, index) => {
 		let pairs = [];
+		pairs.push(['id', index+1]);
 
 		for (let key in result) {
 			let pair = [key, result[key].value];

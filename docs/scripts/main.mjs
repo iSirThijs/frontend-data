@@ -1,5 +1,6 @@
 import { queryStringUtilities, fetchResults, cleaningUtilities, transformUtilities } from './frontend-modules/nmvw-sparql-module/nmvw-sparql-module.mjs';
 import { drawCircles } from './bubbleChart.mjs';
+import createFilterMenu from './filters.mjs';
 
 let url = 'https://api.data.netwerkdigitaalerfgoed.nl/datasets/ivo/NMVW/services/NMVW-37/sparql';
 const prefixes = {
@@ -30,6 +31,17 @@ fetchResults(url, queryString)
 	.then((creators) => cleaningUtilities.extractTitles(creators))
 	.then((creators) => creators.map((creator) => Object.fromEntries(creator)))
 	.then((creators) => {
+		// console.log(creators);
+
+		let filterBar = document.getElementById('filter-bar');
+		let filterMenus = createFilterMenu(creators, ['titles']);
+
+		filterMenus.forEach(filterMenu => filterBar.appendChild(filterMenu));
+
 		drawCircles(creators);
-		console.log(creators);
+
+
+
 	});
+
+

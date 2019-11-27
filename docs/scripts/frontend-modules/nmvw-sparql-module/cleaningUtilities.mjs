@@ -29,7 +29,7 @@ export function extractTitles(creators) {
 		});
 
 		if(creatorTitles.size == 0) creator.set('name', name).set('titles', undefined);
-		else creator.set('name', name).set('titles', Array.from(creatorTitles));
+		else creator.set('name', name).set('titles', creatorTitles );
 
 		return creator;
 
