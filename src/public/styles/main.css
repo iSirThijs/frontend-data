@@ -7,9 +7,9 @@ body {
 
 header {
 	/* lay-out */
-	display: flex;
+	/* display: flex;
 	flex-flow: column;
-	justify-content: flex-start;
+	justify-content: flex-start; */
 
 	/* position */
 	position: fixed;
@@ -41,12 +41,15 @@ header > h1 {
 
 
 #info-card {
-	position: sticky;
 	background: rgb(119, 110, 128);
 	display: flex;
 	flex-flow: column;
 	justify-content: flex-start;
 	padding: 0.5em;
+}
+
+#info-card.hidden {
+	display: none;
 }
 
 #info-card > p {
