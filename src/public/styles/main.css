@@ -46,7 +46,7 @@ header > h1 {
 }
 
 
-#info-card {
+.info-card {
 	background: rgb(119, 110, 128);
 	display: flex;
 	flex-flow: column;
@@ -54,11 +54,11 @@ header > h1 {
 	padding: 0.5em;
 }
 
-#info-card.hidden {
+.hidden {
 	display: none;
 }
 
-#info-card > p {
+.info-card > p {
 	color: white;
 	margin: 0;
 }
@@ -82,6 +82,10 @@ main {
 
 .bubbles:hover {
 	fill-opacity: 1;
+}
+
+.selected-bubble {
+	fill: rgb(119, 110, 128);
 }
 
 footer {
