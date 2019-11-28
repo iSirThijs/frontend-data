@@ -33,6 +33,17 @@ function update(data) {
 		});
 	}
 
+	let totalObjects = data.reduce((totalObjects, data) => {
+		return totalObjects + parseInt(data.creatorCount);
+	}, 0);
+
+	let infoCardAll = d3.select('#info-card-all');
+	infoCardAll.selectAll('p').remove();
+
+	if(value === 'All') infoCardAll.append('p').text(`${data.length} creators hebben ${totalObjects} objecten bijgedragen aan de fotocollectie van het NMVW`);
+	else if (value === 'undefined') infoCardAll.append('p').text(`${data.length} creators zonder titel hebben ${totalObjects} objecten bijdgedragen aan de fotocollectie van het NMVW`);
+	else  infoCardAll.append('p').text(`${data.length} creators met de titel ${value} hebben ${totalObjects} objecten bijdgedragen aan de fotocollectie van het NMVW`);
+
 	let bubbleChart = d3.select('#bubble-chart');
 
 	const zoom = d3.zoom()
@@ -100,16 +111,22 @@ function translate() {
 }
 
 function showInfoOverlay(d){
+
+	d3.select('.selected-bubble').classed('selected-bubble', false);
+
+	let target = d3.event.target;
+
+	target.classList.add('selected-bubble');
+
 	let { data } = d;
 	let {creatorCount, name, titles } = data;
+	if (titles) titles = [...titles];
 
-	let infoCard = d3.select('#info-card');
-
-	console.log(infoCard);
+	let infoCard = d3.select('#info-card-creator');
 
 	infoCard.selectAll('p').remove();
 
-	infoCard.append('p').text(name);
+	infoCard.append('p').text(`${titles ? titles.join(' '): ' '} ${name}`);
 	infoCard.append('p').text(`Heeft ${creatorCount} foto's aan de collectie bijgedragen`);
 
 	infoCard.classed('hidden', false);
