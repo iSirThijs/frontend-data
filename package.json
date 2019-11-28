@@ -4,6 +4,7 @@
   "description": "This repo is for the subject frontend-data from the [Tech Track](https://github.com/cmda-tt/course-19-20)",
   "main": "./server/app.js",
   "scripts": {
+    "start": "node app.js --env production",
     "dev": "node app.js",
     "dev-nodemon": "nodemon --inspect app.js"
   },
