@@ -3,79 +3,98 @@ export function drawCircles(data) {
 	const height = 1000;
 	const width = 1000;
 
-	// Gets the lay-out for the data
-	const pack = data => d3.pack()
-		.size([width, height])
-		(d3.hierarchy({children: data})
-			.sum(d => Math.sqrt(d.creatorCount)));
-
-	const root = pack(data);
-
-
 	// zoom and pan features
+	
+	// filter menu listeners
+	let filters = d3.selectAll('.filter-radiobuttons');
+	filters.on('change', () => update(data));
+
+	// Creates the viewBox with zoom
+	let svg = d3.select('#main')
+		.append('svg')
+		.attr('id', 'bubble-chart')
+		.attr('viewBox', () => `0, 0, ${width}, ${height}`);
+
+	svg.append('g').attr('id', 'bubbles');
+
+	update(data);
+
+	
+	
+}
+
+function update(data) {
+	// Filter data
+	let key = d3.event ? d3.event.target.name : undefined;
+	let value = d3.event ? d3.event.target.value : 'All';
+
+	if(value !== 'All') {
+		data = data.filter((datum) => {
+			if (value === 'undefined') return datum[key] === undefined;
+			else return datum[key] && datum[key].has(value);
+		});
+	}
+
+	let bubbleChart = d3.select('#bubble-chart');
+
 	const zoom = d3.zoom()
 		.scaleExtent([1, 1.5])
 		.on('zoom', translate);
 
+	bubbleChart.call(zoom);
 
-	// Creates the viewBox
-	const svg = d3.select('#bubbleChart')
-		.append('svg')
-		.data(root.ancestors()) // assign the root to the group of bubbles
-		.attr('viewBox', d => `0, 0, ${width}, ${height}`)
-		.call(zoom);
-		
+	let pack = d3.pack()
+		.size([1000, 1000]);
 
-	// Creates a group with all the bubbles, this group will use scale and translate.
-	const bubbles = svg
+	let h = d3.hierarchy({children: data})
+		.sum(d => Math.sqrt(d.creatorCount));
+
+
+	let bubbles = d3.select('#bubbles')
+		.data(pack(h).ancestors());
+
+	// transition
+	let t = d3.transition()
+		.duration(700)
+		.ease(d3.easePoly);
+
+	// JOIN
+	let bubble = bubbles.selectAll('g')
+		.data(pack(h).leaves(), d => d.data.id);
+
+
+	// EXIT
+	let bubbleExit = bubble.exit();
+	bubbleExit.select('.bubbles').transition(t).attr('r', 0).attr('fill-opacity',0);
+	bubbleExit.transition(h).delay(700).remove();
+
+	// UPDATE
+	bubble.transition(t).attr('transform', d => `translate(${d.x},${d.y})`);
+	bubble.select('.bubbles').transition(t).attr('r', d => d.r);
+
+	// ENTER
+	let bubbleEnter = bubble.enter()
 		.append('g')
-		.attr('id', d => d.id)
-		.attr('transform', d  => `translate(-${d.x}, -${d.y})`)
+		.classed('g', true)
+		.attr('id', d => d.data.id)
+		.attr('transform', d => `translate(${d.x} ${d.y})`);
 
-	const bubble = bubbles.selectAll('g')
-		.data(root.leaves())
-		.enter()
-		.append('g')
-		.attr('id', d => d.id)
-		.attr('transform', d => `translate(${d.x},${d.y})`);
+	bubbleEnter.append('circle')
+		.classed('bubbles', true)
+		.attr('r', 0)
+		.transition(t)
+		.attr('r', d => d.r);
 
-	bubble.append('circle')
-		.attr('class', 'bubbles')
-		.append('animate')
-		.attr('attributeName', 'r')
-		.attr('to', d => d.r)
-		.attr('begin', 'bubbleChart')
-		.attr('dur', '1s')
-		.attr('restart', 'never')
-		.attr('fill', 'freeze');
-
-	return svg.node();
-
-	function translate(d) {
-		let transform = d3.event.transform;
-		let { x, y } = d;
-		let translate = transform.translate(-x, -y);
-
-		bubbles.attr('transform', translate);
-
-	}
 
 
 }
 
 
+function translate() {
+	let transform = d3.event.transform;
 
+	let translate = transform.translate(0, 0);
 
-// svg = d3.select('.chart')
-//     .classed("svg-container", true)
-//     .append('svg')
-//     .attr('class', 'chart')
-//     .attr("viewBox", "0 0 680 490")
-//     .attr("preserveAspectRatio", "xMinYMin meet")
-//     .classed("svg-content-responsive", true)
-//     // call d3 Zoom
-//     .call(d3.zoom().on("zoom", function () {
-//         svg.attr("transform", d3.event.transform)
-//         }))
-//     .append("g")
-//     .attr("transform", "translate(" + margin + "," + margin + ")");
+	d3.select('#bubbles').attr('transform', translate);
+
+}

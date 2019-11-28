@@ -5,8 +5,6 @@ body {
 	font-family: 'Open Sans', sans-serif ;
 }
 
-
-
 header {
 	/* lay-out */
 	display: flex;
@@ -62,13 +60,45 @@ main {
 	overflow: hidden;
 }
 
-#bubbleChart > svg {
-	width: 500vmax;
-	height: 500vmax;
-}
+/* #bubble-chart {
+	width: 100%;
+	height: 100%;
+} */
 
 .bubbles {
+  	stroke-linejoin: round;
 	fill: grey;
 	fill-opacity: 0.7;
 }
+
+.bubbles:hover {
+	fill-opacity: 1;
+}
+
+footer {
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0.2em;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+}
+
+#filter-bar {
+	background-color: rgba(209, 209, 209, 0.795);
+	border-radius: 0.5em;
+	flex-flow: row;
+	display: flex;
+	list-style: none;
+	margin: 0 ;
+	padding: 0;
+}
+
+#filter-bar li ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+
 
