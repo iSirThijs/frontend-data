@@ -20,14 +20,25 @@ This visualization is about exploring the photographic collection from the NVMW 
 
 This concept is a continuation of the concept from the previous subject [Functional Programming](https://github.com/iSirThijs/functional-programming/wiki)
 
-## Install
+## Install & Usage
 
-To install this app to your machine use:
+Follow these instructions to use the app:
+
+1. Clone the repository to you machine
 ```bash
 git clone https://github.com/iSirThijs/functional-programming.git
 ```
 
-*Optional*
-If you want to use eslint (and don't have it global already): `run npm install`
+2. Install dependencies
+```
+npm install
+```
 
-> **Important** Opening the file in the browser will not work due to CORS issues with ES modules. Use a local webserver(or livereload plugin) to host the file at localhost. (I Used [Prepros](https://prepros.io))
+3. Start the server
+```
+npm run dev
+```
+or with nodemon
+```
+npm run dev-nodemon
+```

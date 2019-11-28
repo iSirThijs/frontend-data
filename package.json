@@ -2,9 +2,10 @@
   "name": "frontend-data",
   "version": "1.0.0",
   "description": "This repo is for the subject frontend-data from the [Tech Track](https://github.com/cmda-tt/course-19-20)",
-  "main": "index.html",
+  "main": "./server/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node app.js",
+    "dev-nodemon": "nodemon --inspect app.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,16 @@
   },
   "homepage": "https://github.com/iSirThijs/frontend-data#readme",
   "devDependencies": {
-    "eslint": "^6.6.0"
+    "dotenv": "^8.2.0",
+    "eslint": "^6.7.1",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "nodemon": "^2.0.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }
