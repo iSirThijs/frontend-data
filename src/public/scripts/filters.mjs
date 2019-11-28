@@ -1,84 +1,76 @@
-export default function createFilterMenu(data, keys) {
+export default function createFilters(data, filterMap = undefined, targetElement = 'filters') {
 
-	let filterMenuTabsMap = createMenu(data, keys);
+	if(!filterMap) return data;
 
-	let menu = filterMenuTabsMap.map((filterMenuTab) => {
-		let [filterTitle, filterTab] = filterMenuTab;
+	let target = document.getElementById(targetElement);
 
-		let li = document.createElement('li');
-	
-		li.appendChild(filterTab);
+	let filters = filterMap.map(([filterID]) => [filterID, getFilterValues(data, filterID)]);
+	let filterMenus = filters.map((filter) => createFilterButtons(filter));
 
-		let p = document.createElement('p');
-		p.textContent = filterTitle;
+	filterMenus.forEach(filterButtons => target.appendChild(filterButtons));
 
-		li.appendChild(p);
-
-		return li;
+	let filterTabs = filterMap.map(([filterID, filterText]) => {
+		let filterTab = document.createElement('li');
+		filterTab.setAttribute('id', filterID);
+		filterTab.textContent = filterText;
+		return filterTab;
 	});
 
-	return menu;
+	let filterBar = document.createElement('ul');
+	filterBar.setAttribute('id', 'filter-bar');
+	filterTabs.forEach((filterTab) => {
+		filterBar.addEventListener('click', function (event) {
+			let { id } = event.target;
+			document.getElementById(id).classList.toggle('selected');
+			document.getElementById(`filter-${id}`).classList.toggle('selected');
+		});
+		filterBar.appendChild(filterTab);
+	});
 
+	target.appendChild(filterBar);
+
+	return data;
 }
 
-// Creates an array with possible filters for 1 key
-function createFilterArray(dataArray, key) {
+// Returns an array with the filterID an array with all possible filters for 1 filterID
+function getFilterValues(data, filterID) {
 	let filterArray = new Set();
-	dataArray.forEach(element => {
-		if(!element[key]) filterArray.add(element[key]);
-		else {
-			element[key].forEach((e)=>filterArray.add(e));
-		}
+	data.forEach(datum => {
+		if(!datum[filterID]) filterArray.add(datum[filterID]);
+		else datum[filterID].forEach((e)=>filterArray.add(e));
 	});
 	return Array.from(filterArray);
 }
 
-
-// returns menu tabs for the supplied keys
-function createMenu(filters, keys) {
-
-	let menuMap = new Map();
-
-	keys.forEach((key) =>{
-		let filterArray = createFilterArray(filters, key);
-		let menuTab = createMenuTab(filterArray, key);
-
-		menuMap.set(key, menuTab);
-
-	});
-
-	let menu = [...menuMap.entries()];
-
-	return menu;
-
-}
-
-// creates on menu tab for the specified key
-function createMenuTab(filter, key){
+// creates on menu tab for the specified filterID
+function createFilterButtons([filterID, filterValues]){
 	let ul = document.createElement('ul');
-	ul.setAttribute('id', `filter-${key}`);
+	ul.setAttribute('id', `filter-${filterID}`);
+	ul.setAttribute('class', 'filter-menu');
 	
-	filter.unshift('Alles'); // creates an everything radio button
+	filterValues.unshift('Alles'); // creates an everything radio button
 
-	let radiobuttons = filter.map((filterChoice) => {
+	// create radiobuttons with labels for every value in a filter
+	let radiobuttons = filterValues.map((filterValue) => {
 		let li = document.createElement('li');
 
 		let input = document.createElement('input');
+		
 		input.setAttribute('type', 'radio');
-		input.setAttribute('class', 'filter-radiobuttons')
-		input.setAttribute('id', filterChoice !== 'Alles' ? `filter-${key}-${filterChoice}` : `filter-${key}-All`);
-		input.setAttribute('name', key);
-		input.setAttribute('value', filterChoice !== 'Alles' ? filterChoice : 'All');
+		input.setAttribute('id', filterValue !== 'Alles' ? `filter-${filterID}-${filterValue}` : `filter-${filterID}-All`);
+		input.setAttribute('class', 'filter-radiobuttons');
+		input.setAttribute('name', filterID);
+		input.setAttribute('value', filterValue !== 'Alles' ? filterValue : 'All');
 
-		if(filterChoice === 'Alles') input.setAttribute('checked', true);
+		if(filterValue === 'Alles') input.setAttribute('checked', true);
 
 		li.append(input);
 
 		let label = document.createElement('label')
-		label.setAttribute('for', filterChoice);
-		label.setAttribute('value', filterChoice);
+		label.setAttribute('for', `filter-${filterID}-${filterValue !== 'Alles' ? filterValue : 'All'}`);
+		label.setAttribute('value', filterValue);
 		
-		label.textContent = filterChoice ? filterChoice : 'Zonder/Onbekend';
+		label.textContent = filterValue ? filterValue : 'Zonder/Onbekend';
 
 		li.append(label);
 

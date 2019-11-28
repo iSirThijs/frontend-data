@@ -18,8 +18,6 @@ export function drawCircles(data) {
 	svg.append('g').attr('id', 'bubbles');
 
 	update(data);
-
-	
 	
 }
 
@@ -86,6 +84,8 @@ function update(data) {
 		.attr('r', d => d.r);
 
 
+	d3.selectAll('.bubbles').on('click', showInfoOverlay);
+
 
 }
 
@@ -96,5 +96,22 @@ function translate() {
 	let translate = transform.translate(0, 0);
 
 	d3.select('#bubbles').attr('transform', translate);
+
+}
+
+function showInfoOverlay(d){
+	let { data } = d;
+	let {creatorCount, name, titles } = data;
+
+	let infoCard = d3.select('#info-card');
+
+	console.log(infoCard);
+
+	infoCard.selectAll('p').remove();
+
+	infoCard.append('p').text(name);
+	infoCard.append('p').text(`Heeft ${creatorCount} foto's aan de collectie bijgedragen`);
+
+	infoCard.classed('hidden', false);
 
 }
