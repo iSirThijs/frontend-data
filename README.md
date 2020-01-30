@@ -2,7 +2,7 @@
 ![bubbles](https://github.com/iSirThijs/frontend-data/wiki/images/endresultScreen.png)
 
 ## Features and concept
-This visualization is about exploring the photographic collection from the NVMW split out on the person who made the photo. The lager the bubble, the more items in the collection are from that creator and made interactive by clicking on the bubble to get more info on that creator. The overlay can also be changed depending on the layer selected (acedemic title, male/female etc.)
+This visualization is about exploring the photographic collection from the NVMW split out on the person who made the photo. The lager the bubble, the more items in the collection are from that creator and made interactive by clicking on the bubble to get more info on that creator. The overlay can also be changed depending on the layer selected (acedemic title, male/female etc.) It is live at https://nmvw-creators-explore.herokuapp.com
 
 This concept is a continuation of the concept from the previous subject [Functional Programming](https://github.com/iSirThijs/functional-programming/wiki)
 
