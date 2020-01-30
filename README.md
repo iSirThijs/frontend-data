@@ -15,6 +15,10 @@ The goal for the subject is to create an interactive visualization of data for t
 
 > Create a data visualisation (using the d3 library) based on given data where data can be explored through interaction using enter, update, and exit. *- [Tech Track CMDA: Assignment](https://github.com/cmda-tt/course-19-20/blob/master/frontend-data/assessment.md#assignment)*
 
+## Read all about it
+The process, iteration and choices I made during this project are documented on the [Wiki](https://github.com/iSirThijs/frontend-data/wiki). 
+
+To get a chronological view, start by reading the journal. The journal contains a small day to day summary of my work and a link to the relevant page with detailed information.
 
 
 ## Install & Usage
